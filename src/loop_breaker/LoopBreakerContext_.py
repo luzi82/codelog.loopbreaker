@@ -15,23 +15,29 @@ class LoopBreakerContext:
 		
 		imgHeight, imgWidth = self.image_ori.shape[:2]
 		offset=5
+		
+		border = self.detectBorder(self.image_ori,["x0","x1","y0","y1"])
 
-		for y,x in product(xrange(imgHeight),xrange(imgWidth)):
+		y=border["y0"]
+		for x in xrange(border["x0"],border["x1"]+1):
 			if(self.image_ori[y,x]>=0x7f):
 				ret.append({"x":x+offset,"y":y+offset})
 				break
 
-		for x,y in product(reversed(xrange(imgWidth)),xrange(imgHeight)):
+		x=border["x1"]
+		for y in reversed(xrange(border["y0"],border["y1"]+1)):
 			if(self.image_ori[y,x]>=0x7f):
 				ret.append({"x":x-offset,"y":y+offset})
 				break
 
-		for y,x in product(reversed(xrange(imgHeight)),xrange(imgWidth)):
+		y=border["y1"]
+		for x in reversed(xrange(border["x0"],border["x1"]+1)):
 			if(self.image_ori[y,x]>=0x7f):
 				ret.append({"x":x+offset,"y":y-offset})
 				break
 
-		for x,y in product(xrange(imgWidth),xrange(imgHeight)):
+		x=border["x0"]
+		for y in xrange(border["y0"],border["y1"]+1):
 			if(self.image_ori[y,x]>=0x7f):
 				ret.append({"x":x+offset,"y":y+offset})
 				break
