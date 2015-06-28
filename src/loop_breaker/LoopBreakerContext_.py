@@ -25,13 +25,13 @@ class LoopBreakerContext:
 				break
 
 		x=border["x1"]
-		for y in reversed(xrange(border["y0"],border["y1"]+1)):
+		for y in xrange(border["y0"],border["y1"]+1):
 			if(self.image_ori[y,x]>=0x7f):
 				ret.append({"x":x-offset,"y":y+offset})
 				break
 
 		y=border["y1"]
-		for x in reversed(xrange(border["x0"],border["x1"]+1)):
+		for x in xrange(border["x0"],border["x1"]+1):
 			if(self.image_ori[y,x]>=0x7f):
 				ret.append({"x":x+offset,"y":y-offset})
 				break
