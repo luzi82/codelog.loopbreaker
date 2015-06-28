@@ -93,7 +93,8 @@ class LoopBreakerContext:
 					u <<= 1
 				cellList.append(v)
 			self.puzzle["cellListList"].append(cellList)
-		
+	
+	def solve(self):
 		self.puzzle["solutionList"] = self.solvePuzzle(self.puzzle)
 	
 	def getPuzzle(self):

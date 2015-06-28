@@ -38,6 +38,7 @@ class Test001(unittest.TestCase):
 			]
 		]);
 
+		lbl.solve()
 		tmp = lbl.getPuzzle()
 		self.assertEqual(len(tmp["solutionList"]),2)
 		

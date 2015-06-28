@@ -49,6 +49,7 @@ class Test000(unittest.TestCase):
 			]
 		]);
 
+		lbl.solve()
 		tmp = lbl.getPuzzle()
 		self.assertEqual(tmp["width"],3)
 		self.assertEqual(tmp["height"],2)
