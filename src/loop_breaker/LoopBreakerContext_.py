@@ -1,5 +1,6 @@
 import cv2
 from itertools import product
+import copy
 
 class LoopBreakerContext:
 
@@ -219,6 +220,9 @@ class LoopBreakerContext:
 
 			action = False
 			bad = False
+			diverX=None
+			diverY=None
+			diverOkList=None
 			for yy in xrange(hh):
 				for xx in xrange(ww):
 					if pLL[yy][xx]["done"]:
@@ -277,6 +281,10 @@ class LoopBreakerContext:
 					elif len(okList) == 0:
 						bad = True
 						break
+					elif (not action) and (diverOkList==None):
+						diverX = xx
+						diverY = yy
+						diverOkList = okList
 				if bad:
 					break
 			
@@ -284,8 +292,18 @@ class LoopBreakerContext:
 				undoneLLL.pop(0)
 				continue
 				
-			if not action:
-				raise ValueError("not action")
+			if action:
+				continue
+
+			for diverOk in diverOkList:
+				newPLL = copy.deepcopy(pLL)
+				newP = newPLL[diverY][diverX]
+				newP["v"]=diverOk["v"]
+				newP["ans"]=diverOk["ans"]
+				newP["done"]=True
+				undoneLLL.append(newPLL)
+			
+			undoneLLL.pop(0)
 
 		ret = []
 		for doneLL in doneLLL:
