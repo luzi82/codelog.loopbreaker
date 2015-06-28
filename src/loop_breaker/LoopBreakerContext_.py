@@ -161,26 +161,26 @@ class LoopBreakerContext:
 		imgHeight, imgWidth = image.shape[:2]
 	
 		if "y0" in interestL:
-			for y,x in product(xrange(imgHeight),xrange(imgWidth)):
-				if(image[y,x]>=0x7f):
+			for y in xrange(imgHeight):
+				if cv2.countNonZero(image[y:y+1,:])>0:
 					ret["y0"]=y
 					break
 
 		if "x0" in interestL:
-			for x,y in product(xrange(imgWidth),xrange(imgHeight)):
-				if(image[y,x]>=0x7f):
+			for x in xrange(imgWidth):
+				if cv2.countNonZero(image[:,x:x+1])>0:
 					ret["x0"]=x
 					break
 
 		if "x1" in interestL:
-			for x,y in product(reversed(xrange(imgWidth)),xrange(imgHeight)):
-				if(image[y,x]>=0x7f):
+			for x in reversed(xrange(imgWidth)):
+				if cv2.countNonZero(image[:,x:x+1])>0:
 					ret["x1"]=x
 					break
 
 		if "y1" in interestL:
-			for y,x in product(reversed(xrange(imgHeight)),xrange(imgWidth)):
-				if(image[y,x]>=0x7f):
+			for y in reversed(xrange(imgHeight)):
+				if cv2.countNonZero(image[y:y+1,:])>0:
 					ret["y1"]=y
 					break
 
