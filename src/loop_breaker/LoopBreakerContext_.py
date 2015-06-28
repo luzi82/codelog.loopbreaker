@@ -41,6 +41,7 @@ class LoopBreakerContext:
 	def setBorderTestClickImage(self, imageListList):
 
 		borderList=[]
+		borderImg=[]
 		
 		for imageList in imageListList:
 			tmp0 = None
@@ -51,14 +52,18 @@ class LoopBreakerContext:
 					tmp0 = tmp1
 				else:
 					tmp0 = cv2.bitwise_or(tmp0,tmp1)
-			border = self.detectBorder(tmp0)
-			borderList.append(border)
+			borderImg.append(tmp0)
+
+		borderList.append(self.detectBorder(borderImg[0],["y0","y1"]))
+		borderList.append(self.detectBorder(borderImg[1],["x0","x1"]))
+		borderList.append(self.detectBorder(borderImg[2],["y1"]))
+		borderList.append(self.detectBorder(borderImg[3],["x0"]))
 
 		self.x0=borderList[3]["x0"]
 		self.y0=borderList[0]["y0"]
 		self.x1=borderList[1]["x1"]
 		self.y1=borderList[2]["y1"]
-		self.cellW=borderList[0]["x1"]-borderList[0]["x0"]
+		self.cellW=borderList[1]["x1"]-borderList[1]["x0"]
 		self.cellH=borderList[0]["y1"]-borderList[0]["y0"]
 		
 		self.puzzleWidth=(self.x1-self.x0+(self.cellW/2))/self.cellW
@@ -150,30 +155,34 @@ class LoopBreakerContext:
 		print(ret)
 
 	@staticmethod
-	def detectBorder(image):
+	def detectBorder(image,interestL):
 		ret={}
 
 		imgHeight, imgWidth = image.shape[:2]
 	
-		for y,x in product(xrange(imgHeight),xrange(imgWidth)):
-			if(image[y,x]>=0x7f):
-				ret["y0"]=y
-				break
+		if "y0" in interestL:
+			for y,x in product(xrange(imgHeight),xrange(imgWidth)):
+				if(image[y,x]>=0x7f):
+					ret["y0"]=y
+					break
 
-		for x,y in product(xrange(imgWidth),xrange(imgHeight)):
-			if(image[y,x]>=0x7f):
-				ret["x0"]=x
-				break
+		if "x0" in interestL:
+			for x,y in product(xrange(imgWidth),xrange(imgHeight)):
+				if(image[y,x]>=0x7f):
+					ret["x0"]=x
+					break
 
-		for x,y in product(reversed(xrange(imgWidth)),xrange(imgHeight)):
-			if(image[y,x]>=0x7f):
-				ret["x1"]=x
-				break
+		if "x1" in interestL:
+			for x,y in product(reversed(xrange(imgWidth)),xrange(imgHeight)):
+				if(image[y,x]>=0x7f):
+					ret["x1"]=x
+					break
 
-		for y,x in product(reversed(xrange(imgHeight)),xrange(imgWidth)):
-			if(image[y,x]>=0x7f):
-				ret["y1"]=y
-				break
+		if "y1" in interestL:
+			for y,x in product(reversed(xrange(imgHeight)),xrange(imgWidth)):
+				if(image[y,x]>=0x7f):
+					ret["y1"]=y
+					break
 
 		return ret
 
