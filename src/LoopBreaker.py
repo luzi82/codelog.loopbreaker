@@ -41,6 +41,10 @@ if __name__ == '__main__':
 
 		print(lbl.getPuzzle())
 		
+		lbl.solve()
+		
+		print(lbl.getPuzzle()["solutionList"])
+		
 		clickStepList = lbl.getSolutionClickStepList()
 		
 		if len(clickStepList) == 0:
